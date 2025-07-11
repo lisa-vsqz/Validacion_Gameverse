@@ -1,21 +1,24 @@
 package com.yourcompany.gameverse.model;
 
-
 import java.math.*;
 
 import javax.persistence.*;
+import javax.ws.rs.*;
 
 import org.openxava.annotations.*;
 
 import lombok.*;
 
-@Entity @Getter @Setter
+@Entity 
+@Getter @Setter 
 public class Videojuego extends Identificable {
     
-    @Column(length=50) @Required
+    @Column(length=50) 
+    @Required
     String titulo;
     
-    @Column(length=500) @Stereotype("MEMO")
+    @Column(length=500) 
+    @Stereotype("MEMO")
     String descripcion;
     
     @ManyToOne(fetch=FetchType.LAZY, optional=true)
@@ -27,13 +30,16 @@ public class Videojuego extends Identificable {
     Categoria categoria;
     
     @Money
+    @Required
     BigDecimal precio;
     
     @Column
-    int stock;
+    @DefaultValue("0")
+    Integer stock; // Cambié de int a Integer para permitir null
     
     @Column(length=4)
-    int añoLanzamiento;
+    @DefaultValue("2024")
+    Integer añoLanzamiento; // Cambié de int a Integer para permitir null
     
     @ManyToOne(fetch=FetchType.LAZY, optional=true)
     @DescriptionsList
@@ -42,8 +48,4 @@ public class Videojuego extends Identificable {
     @Files
     @Column(length=32)
     String imagenes;
-    
-
-    
-
 }

@@ -16,9 +16,23 @@ public class CalculadorPrecioVideojuego implements ICalculator {
     
     @Override
     public Object calculate() throws Exception {
-        if (idVideojuego == null) return BigDecimal.ZERO;
-        Videojuego juego = XPersistence.getManager()
-            .find(Videojuego.class, idVideojuego);
-        return juego.getPrecio();
+        if (idVideojuego == null || idVideojuego.trim().isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        
+        try {
+            Videojuego juego = XPersistence.getManager()
+                .find(Videojuego.class, idVideojuego);
+            
+            if (juego == null || juego.getPrecio() == null) {
+                return BigDecimal.ZERO;
+            }
+            
+            return juego.getPrecio();
+            
+        } catch (Exception e) {
+            System.err.println("Error al calcular precio: " + e.getMessage());
+            return BigDecimal.ZERO;
+        }
     }
 }

@@ -9,30 +9,29 @@ import org.openxava.annotations.*;
 
 import lombok.*;
 
-@Embeddable
-@Getter
-@Setter
+@Embeddable 
+@Getter @Setter 
 public class DetalleFactura {
-
+    
+    @ManyToOne(fetch=FetchType.LAZY, optional=false)
+    @DescriptionsList(descriptionProperties="titulo,precio")
+    Videojuego videojuego;
+    
+    @Money
+    @Depends("videojuego.precio")
+    public BigDecimal getPrecioPorUnidad() {
+        if (videojuego == null) return BigDecimal.ZERO;
+        return videojuego.getPrecio() != null ? videojuego.getPrecio() : BigDecimal.ZERO;
+    }
+    
     @Min(1)
     @Required
     int cantidad;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @DescriptionsList(descriptionProperties = "titulo,precio")
-    Videojuego videojuego;
-
+    
     @Money
     @Depends("precioPorUnidad, cantidad")
     public BigDecimal getImporte() {
         if (getPrecioPorUnidad() == null || cantidad <= 0) return BigDecimal.ZERO;
-        return new BigDecimal(cantidad).multiply(getPrecioPorUnidad());
-    }
-
-    @Money
-    @Depends("videojuego")
-    public BigDecimal getPrecioPorUnidad() {
-        if (videojuego == null) return BigDecimal.ZERO;
-        return videojuego.getPrecio();
+        return getPrecioPorUnidad().multiply(new BigDecimal(cantidad));
     }
 }

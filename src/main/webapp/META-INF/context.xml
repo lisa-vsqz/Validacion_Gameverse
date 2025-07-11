@@ -27,7 +27,7 @@
 	<!-- MySQL-->
     <Resource name="jdbc/gameverseDS" auth="Container" type="javax.sql.DataSource"
 	      maxTotal="20" maxIdle="5" maxWaitMillis="10000"
-	      username="root" password="PAPU"  
+	      username="root" password="248956103"  
 	      driverClassName="com.mysql.cj.jdbc.Driver"
 	      url="jdbc:mysql://localhost:3306/gameversedb"/>	      
 	      
